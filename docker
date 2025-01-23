@@ -1,0 +1,21 @@
+# Gebruik een lichte Python-image
+FROM python:3.9-slim
+
+# Installeer systeemvereisten
+RUN apt-get update && apt-get install -y libmysqlclient-dev gcc && rm -rf /var/lib/apt/lists/*
+
+# Stel de werkdirectory in
+WORKDIR /app
+
+# Kopieer afhankelijkheden en installeer ze
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Kopieer de volledige applicatie naar de container
+COPY . /app/
+
+# Exposeer poort 5000
+EXPOSE 5000
+
+# Start de applicatie
+CMD ["python", "app.py"]
